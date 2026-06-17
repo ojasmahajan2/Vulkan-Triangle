@@ -31,4 +31,4 @@ To differentiate and expand some perspective, I added 2 new graphics pipelines t
 **SDL3:** Window creation, Input Polling, Window surface creation for Vulkan and Event Watch (more real-time resizing impact on the spinning triangle)<br>
 **GLM:** Only for rotation (generally used for graphical maths) and basic position + color attributes.<br>
 **VMA:** Allocating memory<br>
-**Slang:** Runtime compilation of HLSL shaders to Spir-V Bytecode.
+**Slang:** Runtime compilation of HLSL shaders to SPIR-V Bytecode.
