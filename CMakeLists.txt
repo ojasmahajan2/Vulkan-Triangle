@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Executable
 add_executable(Vulkan
-    main.cpp
+    Source.cpp
 )
 
 # Vulkan SDK
@@ -37,6 +37,9 @@ target_compile_definitions(Vulkan PRIVATE
 
 # MSVC-specific settings
 if (MSVC)
+    # Use static runtime library
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
     target_compile_options(Vulkan PRIVATE
         /W3
         /permissive-
@@ -47,7 +50,16 @@ if (MSVC)
 
     # Release optimizations
     target_compile_options(Vulkan PRIVATE
+        $<$<CONFIG:Release>:/O2>
         $<$<CONFIG:Release>:/Oi>
         $<$<CONFIG:Release>:/Gy>
+    )
+else()
+    # GCC/Clang-specific settings
+    target_compile_options(Vulkan PRIVATE
+        $<$<CONFIG:Release>:-O3>
+    )
+    target_link_options(Vulkan PRIVATE
+        -static
     )
 endif()
