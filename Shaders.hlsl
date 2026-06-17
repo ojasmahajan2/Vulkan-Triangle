@@ -17,6 +17,14 @@ struct FSInput
     float3 color : COLOR;
 };
 
+struct PushConstants
+{
+    float4x4 mvp;
+};
+
+[[vk::push_constant]]
+ConstantBuffer<PushConstants> pc;
+
 [shader("vertex")]
 VSOutput vertexMain(VSInput input)
 {
@@ -24,7 +32,7 @@ VSOutput vertexMain(VSInput input)
     
     float4 localPosition = float4(input.position, 0.0, 1.0);
     
-    output.pos = localPosition;
+    output.pos = mul(pc.mvp, localPosition);
     output.color = input.color;
     output.pointSize = 8.0;
     

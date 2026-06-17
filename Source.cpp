@@ -593,16 +593,25 @@ private:
 
 		commandBuffers[currentFrame].bindVertexBuffers(0, { vertexBuffer.buffer }, { 0 });
 
+		auto currentTime = std::chrono::steady_clock::now();
+		float time = std::chrono::duration<float>(currentTime - startTime).count();
+
+		pushConstantData pc;
+		pc.mvp = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
 		if (activePipelines & PIPELINE_FILL) {
 			commandBuffers[currentFrame].bindPipeline(vk::PipelineBindPoint::eGraphics, *graphicsPipeline);
+			commandBuffers[currentFrame].pushConstants<pushConstantData>(*pipelineLayout, vk::ShaderStageFlagBits::eVertex, 0, pc);
 			commandBuffers[currentFrame].draw(3, 1, 0, 0);
 		}
 		if (activePipelines & PIPELINE_WIREFRAME) {
 			commandBuffers[currentFrame].bindPipeline(vk::PipelineBindPoint::eGraphics, *wireframePipeline);
+			commandBuffers[currentFrame].pushConstants<pushConstantData>(*pipelineLayout, vk::ShaderStageFlagBits::eVertex, 0, pc);
 			commandBuffers[currentFrame].draw(3, 1, 0, 0);
 		}
 		if (activePipelines & PIPELINE_POINT) {
 			commandBuffers[currentFrame].bindPipeline(vk::PipelineBindPoint::eGraphics, *pointPipeline);
+			commandBuffers[currentFrame].pushConstants<pushConstantData>(*pipelineLayout, vk::ShaderStageFlagBits::eVertex, 0, pc);
 			commandBuffers[currentFrame].draw(3, 1, 0, 0);
 		}
 
