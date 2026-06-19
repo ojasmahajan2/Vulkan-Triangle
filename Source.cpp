@@ -353,6 +353,7 @@ private:
 		createInfo.compositeAlpha = vk::CompositeAlphaFlagBitsKHR::eOpaque;
 		createInfo.presentMode = presentMode;
 		createInfo.clipped = VK_TRUE;
+		createInfo.oldSwapchain = *swapchain;
 
 		swapchain = vk::raii::SwapchainKHR(device, createInfo);
 		swapchainImages = swapchain.getImages();
@@ -519,7 +520,6 @@ private:
 		device.waitIdle();
 
 		swapchainImageViews.clear();
-		swapchain.clear();
 		imageAvailableSemaphores.clear();
 		renderFinishedSemaphores.clear();
 		inFlightFences.clear();
